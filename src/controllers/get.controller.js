@@ -23,7 +23,6 @@ export const getData = async (req, res) => {
             }else{
                 sql = `SELECT ${params.select} FROM ${params.table} WHERE ${params.linkTo} = '${params.equalTo}'`;
             }
-            
                 
             /*============================
 		     Peticiones para el buscador
@@ -55,7 +54,11 @@ export const getData = async (req, res) => {
             sql = ` INSERT INTO records (idvisit_record, iduserfirebase_record, page_record) VALUES ('${params.visit}','${params.user}','${params.page}')`;
         } else if (params.category && params.select) {
             if (params.table == 'stores') {
-                sql = `SELECT ${params.select} FROM ${params.table} WHERE maincategory_store = '${params.category}'  AND state_store = 'active' AND approval_store = 'approved' ORDER BY id_store DESC`;
+                if (params.orderBy != null && params.orderMode != null) {
+                    sql = `SELECT ${params.select} FROM ${params.table} WHERE maincategory_store = '${params.category}'  AND state_store = 'active' AND approval_store = 'approved' ORDER BY ${params.orderBy} ${params.orderMode}`;
+                }
+                sql = `SELECT ${params.select} FROM ${params.table} WHERE maincategory_store = '${params.category}'  AND state_store = 'active' AND approval_store = 'approved' ORDER BY id_store ASC`;
+
             } else if (params.table == 'storescategories'){
                 sql = `SELECT ${params.select} FROM ${params.table}  WHERE idStore_storecat = '${params.category}' AND state_storecat = 'show' ORDER BY order_storecat ASC`;
             }
@@ -124,14 +127,8 @@ export const getData = async (req, res) => {
             }else{
                 sql = `SELECT ${params.select} FROM ${params.table}`;
             }
+            
         }
-
-
-
-
-
-
-
 
 
         
